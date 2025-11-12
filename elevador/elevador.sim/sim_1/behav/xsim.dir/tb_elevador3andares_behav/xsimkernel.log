@@ -1,0 +1,4 @@
+Running: xsim.dir/tb_elevador3andares_behav/xsimk.exe -simmode gui -wdb tb_elevador3andares_behav.wdb -simrunnum 0 -socket 64869
+Design successfully loaded
+Design Loading Memory Usage: 24600 KB (Peak: 24600 KB)
+Design Loading CPU Usage: 156 ms

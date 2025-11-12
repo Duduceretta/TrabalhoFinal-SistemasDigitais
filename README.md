@@ -33,7 +33,7 @@ A máquina de estados é composta pelos seguintes estados e transições:
 
 ### **Diagrama de Estados:**
 
-''
+''`plaintext
             [PARADO]
            /   |    \
     BotãoAndarSuperior  BotãoAndarInferior  ChegadaAoAndar

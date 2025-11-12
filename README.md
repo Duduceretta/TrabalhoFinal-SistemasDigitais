@@ -46,4 +46,40 @@ A máquina de estados é composta pelos seguintes estados e transições:
            |                    |
       PortasAbertas        PortasFechadas
            |                    |
-        [PARADO]            [PARADO]
+        [PARADO]            [PARADO]```
+
+Explicação do Funcionamento Passo a Passo
+
+Início do Sistema: O elevador começa no 1º andar (andar_atual = "00"), com as portas fechadas e o sistema em estado PARADO.
+
+Subindo para o 3º Andar:
+
+O usuário pressiona o botão para o 3º andar.
+
+O elevador começa a subir e o estado muda para SUBINDO.
+
+Durante o movimento, o motor é acionado e o elevador passa pelo 2º andar (andar_atual = "01") e, em seguida, chega ao 3º andar (andar_atual = "10").
+
+Chegada ao 3º Andar:
+
+O elevador chega ao 3º andar, e o estado muda para ABRINDO_FECHANDO.
+
+As portas são abertas.
+
+O elevador fica parado no 3º andar, aguardando o comando para descer ou abrir as portas.
+
+Descendo para o 1º Andar:
+
+O usuário pressiona o botão para o 1º andar.
+
+O elevador começa a descer e o estado muda para DESCENDO.
+
+O motor é acionado e o elevador passa pelo 2º andar (andar_atual = "01") e, em seguida, chega ao 1º andar (andar_atual = "00").
+
+Chegada ao 1º Andar:
+
+O elevador chega ao 1º andar, e o estado muda para ABRINDO_FECHANDO novamente.
+
+As portas são abertas.
+
+O elevador fica parado e aguarda o próximo comando.

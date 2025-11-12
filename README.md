@@ -33,7 +33,7 @@ A máquina de estados é composta pelos seguintes estados e transições:
 
 ### **Diagrama de Estados:**
 
-```plaintext
+''
             [PARADO]
            /   |    \
     BotãoAndarSuperior  BotãoAndarInferior  ChegadaAoAndar
@@ -46,7 +46,7 @@ A máquina de estados é composta pelos seguintes estados e transições:
            |                    |
       PortasAbertas        PortasFechadas
            |                    |
-        [PARADO]            [PARADO]```
+        [PARADO]            [PARADO]
 
 Explicação do Funcionamento Passo a Passo
 
@@ -83,3 +83,18 @@ O elevador chega ao 1º andar, e o estado muda para ABRINDO_FECHANDO novamente.
 As portas são abertas.
 
 O elevador fica parado e aguarda o próximo comando.
+
+Conclusão
+Aprendizados:
+
+Durante o desenvolvimento deste projeto, aprendemos a modelar sistemas sequenciais usando máquinas de estados finitos (FSM) em VHDL, o que nos permitiu simular o comportamento de um elevador.
+
+A utilização de transições condicionais foi crucial para garantir que o elevador se comportasse de maneira realista, realizando os movimentos de subida, descida, e abertura/fechamento das portas no momento certo.
+
+Dificuldades:
+
+Um dos principais desafios foi garantir que o estado de ABRINDO_FECHANDO fosse corretamente acionado quando o elevador chegasse ao andar de destino, garantindo que as portas se abrissem e fechassem no momento certo.
+
+Além disso, tivemos que ajustar as transições entre os estados de SUBINDO e DESCENDO, pois o motor estava ficando preso em um dos estados, o que levou a revisões nas condições de transição.
+
+No final, o projeto foi um sucesso, com a implementação de uma FSM funcional e a simulação do elevador operando de forma correta, conforme o esperado.

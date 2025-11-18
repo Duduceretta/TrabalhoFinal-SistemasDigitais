@@ -26,6 +26,8 @@ O sistema opera com base em 4 estados principais e transições lógicas baseada
 
 ### Diagrama de Estados
 
+<img width="707" height="274" alt="image" src="Diagrama e Simulação/Diagrama.png" />
+
 📊 Simulação e Testbench
 A validação do projeto foi feita através de simulação de ondas (Waveform). Abaixo, a descrição dos sinais utilizados no testbench:
 

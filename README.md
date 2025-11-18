@@ -24,14 +24,18 @@ O sistema opera com base em 4 estados principais e transições lógicas baseada
 * **DESCENDO:** O motor é acionado para mover a cabine para um andar inferior.
 * **ABRINDO_FECHANDO:** Estado de transição onde o elevador chegou ao destino e manipula as portas.
 
-### Diagrama de Estados
+### 🖼️ Diagrama de Estados
 
-<img width="707" height="274" alt="image" src="Diagrama e Simulação/Diagrama.png" />
+<div align="center">
+  <img width="707" height="274" alt="Diagrama de Estados FSM do Elevador" src="Diagrama e Simulação/Diagrama.png" />
+</div>
 
-📊 Simulação e Testbench
+---
+
+## 📊 Simulação e Testbench
 A validação do projeto foi feita através de simulação de ondas (Waveform). Abaixo, a descrição dos sinais utilizados no testbench:
 
-## 📥 1. Entradas (Inputs)
+### 📥 1. Entradas (Inputs)
 *Sinais de estímulo gerados pelo Testbench para controlar o elevador.*
 
 | Sinal | Símbolo | Descrição | Função |
@@ -42,7 +46,7 @@ A validação do projeto foi feita através de simulação de ondas (Waveform). 
 | **`chamada2_tb`** | 2️⃣ | **Botão do 2º Andar**. | Solicita o elevador para o andar intermediário.<br>• Avalia se precisa subir ou descer. |
 | **`chamada3_tb`** | 3️⃣ | **Botão do 3º Andar**. | Solicita o elevador para o topo.<br>• Se estiver abaixo, inicia subida. |
 
-## 📤 2. Saídas (Outputs)
+### 📤 2. Saídas (Outputs)
 *Sinais de resposta do circuito para controle de motores e sensores.*
 
 | Sinal | Símbolo | Descrição | Comportamento |
@@ -53,54 +57,57 @@ A validação do projeto foi feita através de simulação de ondas (Waveform). 
 | **`abrir_porta_tb`** | 👐 | **Comando Abrir Porta**. | Pulso enviado quando o elevador chega ao destino (Estado **ABRINDO**). |
 | **`fechar_porta_tb`** | 🚪 | **Comando Fechar Porta**. | Sinal ativo enquanto o elevador se prepara para mover ou está em movimento (Segurança). |
 
+## 📉 Resultados da Simulação
 
-Explicação do Funcionamento Passo a Passo
+Abaixo, apresentamos o resultado da simulação (Waveform) realizada no ambiente de desenvolvimento. O gráfico valida a lógica da Máquina de Estados, demonstrando o comportamento dos sinais de entrada e saída ao longo do tempo.
 
-Início do Sistema: O elevador começa no 1º andar (andar_atual = "00"), com as portas fechadas e o sistema em estado PARADO.
+<div align="center">
+  <img width="707" height="274" alt="Waveform da Simulação" src="Diagrama e Simulação/Simulacao.png" />
+</div>
 
-Subindo para o 3º Andar:
+---
 
-O usuário pressiona o botão para o 3º andar.
+### 🕵️‍♂️ Análise Passo a Passo do Funcionamento
 
-O elevador começa a subir e o estado muda para SUBINDO.
+Aqui detalhamos o ciclo completo de operação observado na imagem acima:
 
-Durante o movimento, o motor é acionado e o elevador passa pelo 2º andar (andar_atual = "01") e, em seguida, chega ao 3º andar (andar_atual = "10").
+#### 1. 🏁 Início do Sistema
+* **Estado:** `PARADO`
+* **Posição:** 1º Andar (`andar_atual = "00"`)
+* **Situação:** O sistema inicia resetado, com portas fechadas, aguardando chamadas.
 
-Chegada ao 3º Andar:
+#### 2. 🔼 Subindo para o 3º Andar
+* **Ação:** O usuário pressiona o botão `chamada3`.
+* **Transição:** O estado muda para **`SUBINDO`**.
+* **Movimento:** O motor de subida é acionado. O sensor de andar detecta a passagem pelo 2º andar (`"01"`) até atingir o 3º andar (`"10"`).
 
-O elevador chega ao 3º andar, e o estado muda para ABRINDO_FECHANDO.
+#### 3. 📍 Chegada ao 3º Andar
+* **Transição:** Ao detectar `andar = "10"`, o estado muda para **`ABRINDO_FECHANDO`**.
+* **Ação:** As portas se abrem (`abrir_porta = '1'`).
+* **Espera:** O elevador permanece no andar aguardando nova solicitação ou o fim do temporizador da porta.
 
-As portas são abertas.
+#### 4. 🔽 Descendo para o 1º Andar
+* **Ação:** O usuário pressiona o botão `chamada1`.
+* **Transição:** O estado muda para **`DESCENDO`**.
+* **Movimento:** O motor de descida é acionado, passando pelo 2º andar (`"01"`) até retornar ao térreo (`"00"`).
 
-O elevador fica parado no 3º andar, aguardando o comando para descer ou abrir as portas.
+#### 5. 🏁 Chegada ao 1º Andar (Ciclo Completo)
+* **Transição:** Ao chegar em `"00"`, o estado retorna para **`ABRINDO_FECHANDO`**.
+* **Ação:** As portas se abrem novamente para o desembarque.
+* **Fim:** O sistema volta ao estado `PARADO`, pronto para o próximo ciclo.
 
-Descendo para o 1º Andar:
+---
 
-O usuário pressiona o botão para o 1º andar.
+## 🚀 Conclusão e Considerações Finais
 
-O elevador começa a descer e o estado muda para DESCENDO.
+### 🎓 Aprendizados
+> "A modelagem de sistemas sequenciais é a base para controlar o mundo real."
 
-O motor é acionado e o elevador passa pelo 2º andar (andar_atual = "01") e, em seguida, chega ao 1º andar (andar_atual = "00").
+* **Modelagem FSM:** Compreendemos na prática como traduzir um problema real (elevador) para uma Máquina de Estados Finitos em VHDL.
+* **Lógica Sequencial:** A importância das **transições condicionais** ficou evidente. O elevador só "sabe" o que fazer porque definimos regras estritas de transição baseadas no andar atual e no botão pressionado.
 
-Chegada ao 1º Andar:
+### 🚧 Dificuldades Superadas
+* **Sincronismo de Portas:** O maior desafio foi o estado `ABRINDO_FECHANDO`. Foi necessário garantir que ele fosse acionado **exatamente** na chegada do andar, sem oscilações, para que a porta não abrisse com o elevador em movimento.
+* **Travamento Lógico:** Inicialmente, o motor ficava "preso" nos estados de subida/descida. Ajustamos as condições de saída (borda do clock e verificação do sensor) para corrigir esse comportamento.
 
-O elevador chega ao 1º andar, e o estado muda para ABRINDO_FECHANDO novamente.
-
-As portas são abertas.
-
-O elevador fica parado e aguarda o próximo comando.
-
-Conclusão
-Aprendizados:
-
-Durante o desenvolvimento deste projeto, aprendemos a modelar sistemas sequenciais usando máquinas de estados finitos (FSM) em VHDL, o que nos permitiu simular o comportamento de um elevador.
-
-A utilização de transições condicionais foi crucial para garantir que o elevador se comportasse de maneira realista, realizando os movimentos de subida, descida, e abertura/fechamento das portas no momento certo.
-
-Dificuldades:
-
-Um dos principais desafios foi garantir que o estado de ABRINDO_FECHANDO fosse corretamente acionado quando o elevador chegasse ao andar de destino, garantindo que as portas se abrissem e fechassem no momento certo.
-
-Além disso, tivemos que ajustar as transições entre os estados de SUBINDO e DESCENDO, pois o motor estava ficando preso em um dos estados, o que levou a revisões nas condições de transição.
-
-No final, o projeto foi um sucesso, com a implementação de uma FSM funcional e a simulação do elevador operando de forma correta, conforme o esperado.
+> **Resultado:** O projeto foi um sucesso, entregando uma FSM funcional e uma simulação fiel ao comportamento esperado de um elevador real.

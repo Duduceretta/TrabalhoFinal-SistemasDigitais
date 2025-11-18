@@ -1,51 +1,56 @@
-# **Elevador de 3 Andares - Projeto de Máquina de Estados Finitos (FSM)**
+# 🛗 Elevador de 3 Andares - Controlador FSM em VHDL
 
-## Integrantes:
-- Bruno Difante
-- Eduardo Ceretta
+> Projeto desenvolvido para a disciplina de Sistemas Digitais.
 
----
-
-## Objetivo do Circuito
-
-O objetivo deste projeto é desenvolver um modelo de **Máquina de Estados Finitos (FSM)** em VHDL para controlar um **elevador de 3 andares**. O sistema simula o comportamento de um elevador simples, com a capacidade de subir e descer entre três andares (1º, 2º e 3º), além de abrir e fechar as portas no momento certo.
+## 👥 Integrantes
+* **Bruno Difante**
+* **Eduardo Ceretta**
 
 ---
 
-## Diagrama de Estados (FSM)
+## 🎯 Objetivo do Projeto
 
-A máquina de estados é composta pelos seguintes estados e transições:
+O objetivo deste projeto é desenvolver um modelo de **Máquina de Estados Finitos (FSM)** utilizando a linguagem de descrição de hardware **VHDL**. O sistema simula o comportamento de controle de um elevador de 3 andares, gerenciando a lógica de movimentação (subir/descer), monitoramento de posição e controle de portas.
 
-### **Estados:**
-- **PARADO**: O elevador está parado no andar atual, podendo ter as portas abertas ou fechadas.
-- **SUBINDO**: O elevador está indo para o andar superior.
-- **DESCENDO**: O elevador está indo para o andar inferior.
-- **ABRINDO_FECHANDO**: O elevador está abrindo ou fechando as portas.
+---
 
-### **Transições:**
-1. **PARADO → SUBINDO**: O botão para o andar superior é pressionado.
-2. **PARADO → DESCENDO**: O botão para o andar inferior é pressionado.
-3. **SUBINDO → PARADO**: O elevador chega no andar superior.
-4. **DESCENDO → PARADO**: O elevador chega no andar inferior.
-5. **PARADO → ABRINDO_FECHANDO**: O elevador chega ao andar de destino e as portas começam a abrir ou fechar.
-6. **ABRINDO_FECHANDO → PARADO**: O elevador termina o processo de abrir ou fechar as portas.
+## ⚙️ Arquitetura da Máquina de Estados (FSM)
 
-### **Diagrama de Estados:**
+O sistema opera com base em 4 estados principais e transições lógicas baseadas nas entradas dos botões e sensores de andar.
 
-```plaintext
-            [PARADO]
-           /   |    \
-    BotãoAndarSuperior  BotãoAndarInferior  ChegadaAoAndar
-        |                     |                  |
-    [SUBINDO]            [DESCENDO]          [ABRINDO_FECHANDO]
-        |                     |                   |
-   ChegadaAoAndar      ChegadaAoAndar       PortasFechadas / PortasAbertas
-        |                     |                   |
-    [ABRINDO_FECHANDO]     [ABRINDO_FECHANDO]  [PARADO]
-           |                    |
-      PortasAbertas        PortasFechadas
-           |                    |
-        [PARADO]            [PARADO]
+### Estados Definidos:
+* **PARADO:** O elevador está estático no andar atual (aguardando chamada).
+* **SUBINDO:** O motor é acionado para mover a cabine para um andar superior.
+* **DESCENDO:** O motor é acionado para mover a cabine para um andar inferior.
+* **ABRINDO_FECHANDO:** Estado de transição onde o elevador chegou ao destino e manipula as portas.
+
+### Diagrama de Estados
+
+📊 Simulação e Testbench
+A validação do projeto foi feita através de simulação de ondas (Waveform). Abaixo, a descrição dos sinais utilizados no testbench:
+
+## 📥 1. Entradas (Inputs)
+*Sinais de estímulo gerados pelo Testbench para controlar o elevador.*
+
+| Sinal | Símbolo | Descrição | Função |
+| :--- | :---: | :--- | :--- |
+| **`clk_tb`** | ⏰ | **Clock** (Sincronismo). | Sincroniza as operações da FSM. O sistema avança a cada borda de subida do relógio. |
+| **`reset_tb`** | 🔄 | **Reset** (Reinício). | Quando acionado, força o elevador para o estado inicial (**Térreo**) e fecha as portas. |
+| **`chamada1_tb`** | 1️⃣ | **Botão do 1º Andar**. | Solicita o elevador para o Térreo (Andar 1).<br>• Se estiver acima, inicia descida. |
+| **`chamada2_tb`** | 2️⃣ | **Botão do 2º Andar**. | Solicita o elevador para o andar intermediário.<br>• Avalia se precisa subir ou descer. |
+| **`chamada3_tb`** | 3️⃣ | **Botão do 3º Andar**. | Solicita o elevador para o topo.<br>• Se estiver abaixo, inicia subida. |
+
+## 📤 2. Saídas (Outputs)
+*Sinais de resposta do circuito para controle de motores e sensores.*
+
+| Sinal | Símbolo | Descrição | Comportamento |
+| :--- | :---: | :--- | :--- |
+| **`andar_atual_tb`** | 📍 | **Sensor de Posição** (2 bits). | Indica o andar atual em binário:<br>• `00`: 1º Andar (Térreo).<br>• `01`: 2º Andar.<br>• `10`: 3º Andar. |
+| **`motor_subindo_tb`** | ⬆️ | **Motor de Subida**. | • `'1'`: Aciona o motor para mover a cabine para **CIMA**.<br>• `'0'`: Motor parado. |
+| **`motor_descendo_tb`** | ⬇️ | **Motor de Descida**. | • `'1'`: Aciona o motor para mover a cabine para **BAIXO**.<br>• `'0'`: Motor parado. |
+| **`abrir_porta_tb`** | 👐 | **Comando Abrir Porta**. | Pulso enviado quando o elevador chega ao destino (Estado **ABRINDO**). |
+| **`fechar_porta_tb`** | 🚪 | **Comando Fechar Porta**. | Sinal ativo enquanto o elevador se prepara para mover ou está em movimento (Segurança). |
+
 
 Explicação do Funcionamento Passo a Passo
 
